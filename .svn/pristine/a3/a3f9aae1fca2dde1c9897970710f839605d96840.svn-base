@@ -1,0 +1,137 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package tools;
+
+import java.awt.Point;
+import java.awt.Shape;
+import java.awt.event.KeyEvent;
+import java.awt.geom.Rectangle2D;
+
+import javax.swing.ImageIcon;
+
+/**
+ * The Rectangle tool object.
+ * 
+ * @author vvien
+ * @version 1.7
+ */
+public class RectangleTool extends AbstractTools {
+    
+    /**
+     * The name of the Rectangle.
+     */
+    private static final String DEFAULT_DESCRIPTION = "Rectangle";
+    
+    /**
+     * The image related to the Rectangle.
+     */
+    private static final ImageIcon DEFAULT_IMAGE  = 
+                    new ImageIcon("./images./rectangle_bw.gif");
+    
+    /**
+     * The mnemonic related to the Rectangle.
+     */
+    private static final int DEFAULT_MNEMONIC = KeyEvent.VK_R;
+    
+    /**
+     * My current rectangle. 
+     */
+    private Rectangle2D.Double myRectangle;
+    
+    /**
+     * Constructor for the object.
+     */
+    public RectangleTool() {
+        
+        super(DEFAULT_DESCRIPTION, DEFAULT_IMAGE, DEFAULT_MNEMONIC);
+        myRectangle = new Rectangle2D.Double();
+    }
+    
+    /**
+     * Return the shape when clicked.
+     * Rectangle makes a dot.
+     * 
+     * @param thePoint The point related to the shape. 
+     * @return myRectangle The shape when clicked. 
+     */
+    @Override
+    public Shape getClickedShape(final Point thePoint) {
+        myRectangle = new Rectangle2D.Double();
+        myInitialPoint = (Point) thePoint.clone();
+        myRectangle.setFrameFromDiagonal(myInitialPoint, myInitialPoint);
+        return myRectangle;
+    }
+    
+    /**
+     * Return the shape when pressed.
+     * In this case rectangle draws a dot. 
+     * 
+     * @param thePoint The point related to Pressed.
+     * @return myRectangle The shape that pencil makes.
+     */
+    @Override
+    public Shape getPressedShape(final Point thePoint) {
+        myInitialPoint = (Point) thePoint.clone();
+        myRectangle = new Rectangle2D.Double();
+        myRectangle.setFrameFromDiagonal(myInitialPoint, myInitialPoint);
+        return myRectangle;
+    }
+    
+    /**
+     * Return the shape when Dragged.
+     * In this case rectangle draws a rectangle from Pressed to Dragged.
+     * 
+     * @param thePoint The point related to Dragged.
+     * @return myRectangle The shape that pencil makes.
+     */
+    @Override
+    public Shape getDraggedShape(final Point thePoint) {
+        myEndPoint = (Point) thePoint.clone();
+        myRectangle.setFrameFromDiagonal(myInitialPoint, myEndPoint);
+        return myRectangle;
+    }
+    
+    /**
+     * Return the shape when Released.
+     * In this case rectangle draws a rectangle from Pressed to Released. 
+     * 
+     * @param thePoint The point related to Released.
+     * @return myRectangle The shape that pencil makes.
+     */
+    @Override
+    public Shape getReleasedShape(final Point thePoint) {
+        myEndPoint = (Point) thePoint.clone();
+        myRectangle.setFrameFromDiagonal(myInitialPoint, myEndPoint);
+        return myRectangle;
+    }
+    
+
+//    @Override
+//    public void mousePressed(final MouseEvent theEvent) {
+//        
+//        myRectangle = new Rectangle2D.Double();
+//        myInitialPoint = (Point) theEvent.getPoint().clone();
+//        myRectangle.setFrameFromDiagonal(myInitialPoint, myInitialPoint);
+//        
+//    }
+//
+//    @Override
+//    public void mouseReleased(final MouseEvent theEvent) {
+//        myEndPoint = (Point) theEvent.getPoint().clone();
+//        myRectangle.setFrameFromDiagonal(myInitialPoint, myEndPoint);
+//        myPanel.repaint();
+//        myCurrentDrawing = myDefaultDrawing;
+//    }
+//
+//    @Override
+//    public void mouseDragged(final MouseEvent theEvent) {
+//        myEndPoint = (Point) theEvent.getPoint().clone();
+//        myRectangle.setFrameFromDiagonal(myInitialPoint, myEndPoint);
+//        myPanel.repaint();
+//        myPanel.addNewShape(myRectangle);
+//        
+//    }
+
+    
+}

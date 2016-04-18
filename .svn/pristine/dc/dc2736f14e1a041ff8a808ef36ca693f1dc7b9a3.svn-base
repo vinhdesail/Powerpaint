@@ -1,0 +1,49 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+
+package tools;
+
+import gui.DrawingStorage;
+import gui.PowerPaintPanel;
+
+import javax.swing.ImageIcon;
+import javax.swing.event.MouseInputListener;
+
+/**
+ * The abstract tools for all the tools. 
+ * 
+ * @author vvien
+ * @version 2.0
+ */
+public interface Tool extends MouseInputListener {
+    
+    
+    /**
+     * Return the object name.
+     * 
+     * @return String The image description.
+     */
+    String getDescription();
+    
+    /**
+     * Return the object icon.
+     * 
+     * @return ImageIcon The image icon.
+     */
+    ImageIcon getImage();
+    
+    /**
+     * Return the Paint Panel.
+     * 
+     * @return PaintPanel The main Paint panel.
+     */
+    PowerPaintPanel getPaintPanel();
+    
+    /**
+     * Return the current drawing.
+     * 
+     * @return DrawingStorage The current drawing.
+     */
+    DrawingStorage getCurrentDrawing();
+}

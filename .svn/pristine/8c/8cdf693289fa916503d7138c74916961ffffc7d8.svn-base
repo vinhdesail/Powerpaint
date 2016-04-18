@@ -1,0 +1,40 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package gui;
+
+import java.awt.Color;
+
+import javax.swing.JPanel;
+
+/**
+ * Represent the main Paint Panel for PowerPaint.
+ * 
+ * @author vvien
+ * @version 2.4
+ */
+public class PowerPaintPanel extends JPanel {
+    
+    /**
+     * The constructor for the JPanel.
+     */
+    public PowerPaintPanel() {
+        super();
+    }
+    
+    /**
+     * Display the grid or not.
+     */
+    public void displayGrid() {
+        //TODO
+    }
+    
+    /**
+     * Setting the new color.
+     * 
+     * @param theColor The new color. 
+     */
+    public void setColor(Color theColor) {
+        //TODO
+    }
+}

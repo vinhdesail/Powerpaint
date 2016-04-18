@@ -1,0 +1,34 @@
+package tools;
+
+import javax.swing.ImageIcon;
+
+/*
+ * TCSS 305 - Assignment 5: PowerPaint  
+ */
+
+/**
+ *  The Ellipse tool object.
+ * 
+ * @author vvien
+ * @version 1.8
+ */
+public class EllipseTool extends AbstractTools {
+    
+    /**
+     * My description.
+     */
+    private static final String DEFAULT_DESCRIPTION = "Ellipse";
+    
+    /**
+     * My image.
+     */
+    private static final ImageIcon DEFAULT_IMAGE  = new ImageIcon("./images./ellipse_bw.gif");
+    
+    /**
+     * Constructor for the object.
+     */
+    public EllipseTool() {
+        super(DEFAULT_DESCRIPTION, DEFAULT_IMAGE);
+    }
+    
+}

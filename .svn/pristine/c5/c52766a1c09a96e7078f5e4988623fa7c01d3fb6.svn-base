@@ -1,0 +1,64 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package tools;
+
+import javax.swing.ImageIcon;
+
+/**
+ * The abstract tools for all the tools. 
+ * 
+ * @author vvien
+ * @version 1.4
+ */
+public abstract class AbstractTools implements Tool {
+    
+    /**
+     * The image of the objects.
+     */
+    private final ImageIcon myImage;
+    
+    /**
+     * The description of the object.
+     */
+    private final String myDescription;
+    
+    /**
+     * The constructor for this class.
+     * It is protected for only the lower class to use.
+     * 
+     * @param theDescription The description of the object.
+     * @param theImage The image of the object.
+     */
+    protected AbstractTools(final String theDescription, final ImageIcon theImage) {
+        super();
+        myDescription = theDescription;
+        myImage = theImage;
+    }
+    
+    /**
+     * 
+     */
+    public void draw() {
+        // TODO Auto-generated method stub
+
+    }
+    
+    /**
+     * 
+     * @return String The description related to the object.
+     */
+    public String getDescription() {
+        return myDescription;
+    }
+    
+    /**
+     * 
+     * 
+     * @return Image The Image related to the object.
+     */
+    public ImageIcon getImage() {
+        return myImage;
+    }
+
+}

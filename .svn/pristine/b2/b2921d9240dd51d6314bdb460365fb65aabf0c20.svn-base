@@ -1,0 +1,251 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package gui;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Line2D;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JPanel;
+
+import tools.PencilTool;
+import tools.Tool;
+
+/**
+ * Represent the main Paint Panel for PowerPaint.
+ * 
+ * @author vvien
+ * @version 2.4
+ */
+public class PowerPaintPanel extends JPanel {
+    
+    /** The serial version UID. */
+    private static final long serialVersionUID = -4415003230004206895L;
+
+    /** 
+     * The default width of the JFrame. 
+     */
+    private static final int DEFAULT_WIDTH = 400;
+
+    /** 
+     * The default height of the JFrame. 
+     */
+    private static final int DEFAULT_HEIGHT = 200;
+    
+    /**
+     * The Grid spacing.
+     */
+    private static final int GRID_SPACING = 10;
+    
+    /**
+     * The color of the graphic currently being drawn.
+     */
+    private Color myColor;
+    
+    /**
+     * The current width.
+     */
+    private int myWidth;
+    
+    /**
+     * The shape storage that stores all drawings.
+     */
+    private final List<DrawingStorage> myDrawingList;
+    
+    /**
+     * Boolean to see if grid is enable.
+     */
+    private boolean myGridAlive;
+    
+    /**
+     * The 2d graphics. 
+     */
+    private Graphics2D myG2d;
+    
+    /**
+     * The current tool.
+     */
+    private Tool myCurrentTool;
+    
+    
+//    final Line2D.Double line;
+    
+    /**
+     * The constructor for the JPanel.
+     */
+    public PowerPaintPanel() {
+        super();
+        setBackground(Color.WHITE);
+        setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+        setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+        myCurrentTool = new PencilTool(this);
+        myColor = Color.BLACK;
+        myDrawingList = new ArrayList<DrawingStorage>();
+        myGridAlive = false;
+        addMouseListener(myCurrentTool);
+        addMouseMotionListener(myCurrentTool);
+        
+//        final Tool test = new LineTool(this);
+//        this.addMouseMotionListener(test);
+//        this.addMouseListener(test);
+//        line = new Line2D.Double();
+    }
+    
+    /**
+     * The Paint component.
+     * 
+     * @param theGraphics The graphics passed.
+     */
+    @Override
+    public void paintComponent(final Graphics theGraphics) {
+        super.paintComponent(theGraphics);
+        myG2d = (Graphics2D) theGraphics;
+        
+       
+        //------------- Draw the original stuff -----------//
+        drawList();
+        
+        
+        //------------- Draw the new stuff ----------------//
+        final DrawingStorage currentDrawing = myCurrentTool.getCurrentDrawing(); 
+        myG2d.setPaint(currentDrawing.getMyColor());
+        myG2d.setStroke(new BasicStroke(currentDrawing.getMyWidth()));
+        myG2d.draw(currentDrawing.getMyShape());
+        
+        
+        //------------- Draw the Grid ----------------------//
+        if (myGridAlive) {
+            drawGrid();
+        }
+//        myG2d.setPaint(Color.BLACK);
+//        myG2d.draw(line);
+    }
+    
+    /**
+     * Helper method to draw the list.
+     */
+    private void drawList() {
+        for (final DrawingStorage drawing : myDrawingList) {
+            myG2d.setPaint(drawing.getMyColor());
+            myG2d.setStroke(new BasicStroke(drawing.getMyWidth()));
+            myG2d.draw(drawing.getMyShape());
+        }
+    }
+    
+    /**
+     * Helper method to draw the grid.
+     */
+    private void drawGrid() {
+        myG2d.setColor(Color.GRAY);
+        myG2d.setStroke(new BasicStroke(1));
+        final int heightSpacing = getHeight() / GRID_SPACING;
+        for (int i = 0; i <= heightSpacing; i++) {
+            myG2d.draw(new Line2D.Double(0, GRID_SPACING * i, 
+                                         getWidth(), GRID_SPACING * i));
+        }
+        final int widthSpacing = getWidth() / GRID_SPACING; 
+        for (int i = 0; i <= widthSpacing; i++) {
+            myG2d.draw(new Line2D.Double(GRID_SPACING * i, 0,
+                                         GRID_SPACING * i, getHeight()));
+        }
+    }
+    
+    /**
+     * Save a new shape to list.
+     * 
+     * @param theNewShape New shape that will be save to list. 
+     */
+    public void addNewShape(final Shape theNewShape) {
+        myDrawingList.add(new DrawingStorage(theNewShape, myColor, myWidth));
+    }
+    
+    /**
+     * Display the grid or not.
+     */
+    public void displayGrid() {
+        if (myGridAlive) {
+            myGridAlive = false;
+        } else {
+            myGridAlive = true; 
+        }
+    }
+    
+    /**
+     * Setting the new color.
+     * 
+     * @param theColor The new color. 
+     */
+    public void setColor(final Color theColor) {
+        myColor = theColor;
+    }
+    
+    /**
+     * Getting the new color.
+     * 
+     * @return Color The color. 
+     */
+    public Color getColor() {
+        return myColor;
+    }
+    
+    /**
+     * Get the width.
+     * 
+     * @return myWidth The current width.
+     */
+    public int getMyWidth() {
+        return myWidth;
+    }
+    
+    /**
+     * Set the current width to new value.
+     * 
+     * @param theWidth The current width change. 
+     */
+    public void setMyWidth(final int theWidth) {
+        myWidth = theWidth;
+    }
+    
+    /**
+     * Boolean for if the panel is empty.
+     * 
+     * @return true If the there is no drawing on panel. 
+     */
+    public boolean isPanelEmpty() {
+        return myDrawingList.isEmpty();
+    }
+    
+    /**
+     * Clear the the panel.
+     */
+    public void clearPanel() {
+        myDrawingList.clear();
+    }
+
+    /**
+     * Select the pencil too. 
+     * 
+     * @param theTool The tool selected. 
+     */
+    public void setTool(final Tool theTool) {
+        removeMouseListener(myCurrentTool);
+        removeMouseMotionListener(myCurrentTool);
+        myCurrentTool = theTool;
+        addMouseListener(myCurrentTool);
+        addMouseMotionListener(myCurrentTool);
+    }
+    
+//    public void setLine(final int theX, final int theY, 
+//                        final int theLastX, final int theLastY) {
+//        line.setLine(theX, theY, theLastX, theLastY);
+//    }
+    
+}

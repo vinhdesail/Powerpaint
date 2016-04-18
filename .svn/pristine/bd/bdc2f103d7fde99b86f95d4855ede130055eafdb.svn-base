@@ -1,0 +1,91 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package tools;
+
+
+import gui.DrawingStorage;
+import gui.PowerPaintPanel;
+
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
+
+import javax.swing.ImageIcon;
+
+/**
+ * The Line tool object.
+ * 
+ * @author vvien
+ * @version 1.6
+ */
+public class LineTool extends AbstractTools {
+    
+    /**
+     * My description.
+     */
+    private static final String DEFAULT_DESCRIPTION = "Line";
+    
+    /**
+     * My image.
+     */
+    private static final ImageIcon DEFAULT_IMAGE  = new ImageIcon("./images./line_bw.gif");
+    
+    /**
+     * The new line each time drawn.
+     */
+    private Line2D.Double myNewLine;
+    
+//    /**
+//     * The PaintPanel.
+//     */
+//    private JPanel myPanel;
+    
+    /**
+     * Constructor for the object.
+     * 
+     * @param thePanel The paint panel. 
+     */
+    public LineTool(final PowerPaintPanel thePanel) {
+        
+        super(DEFAULT_DESCRIPTION, DEFAULT_IMAGE, thePanel);
+        myNewLine = new Line2D.Double();
+        
+//        myPanel = thePanel;
+//        line = new Line2D.Double();
+    }
+
+    @Override
+    public void mousePressed(final MouseEvent theEvent) {
+        
+        myNewLine = new Line2D.Double();
+        myInitialPoint = (Point) theEvent.getPoint().clone();
+        myNewLine.setLine(myInitialPoint, myInitialPoint);
+//        myX = theEvent.getX();
+//        myY = theEvent.getY();
+//        ((PowerPaintPanel) myPanel).setLine(myX, myY, myX, myY);
+    }
+
+    @Override
+    public void mouseReleased(final MouseEvent theEvent) {
+        
+        myEndPoint = (Point) theEvent.getPoint().clone();
+        myNewLine.setLine(myInitialPoint, myEndPoint);
+        myPanel.addNewShape(myNewLine); 
+        myPanel.repaint();
+    }
+
+    @Override
+    public void mouseDragged(final MouseEvent theEvent) {
+        
+        myEndPoint = (Point) theEvent.getPoint().clone();
+        myNewLine.setLine(myInitialPoint, myEndPoint);
+        myCurrentDrawing = new DrawingStorage(myNewLine, myPanel.getColor(), 
+                                              myPanel.getMyWidth());
+        myPanel.repaint();
+        
+//        ((PowerPaintPanel) myPanel).setLine(myX, myY, theEvent.getX(), theEvent.getY());
+//        myPanel.repaint();
+    }
+
+}

@@ -1,0 +1,33 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+
+package tools;
+
+import javax.swing.ImageIcon;
+
+/**
+ * The abstract tools for all the tools. 
+ * 
+ * @author vvien
+ * @version 2.0
+ */
+public interface Tool {
+    
+    /**
+     * The draw method in class.
+     */
+    void draw();
+    
+    /**
+     * 
+     * @return String The image description.
+     */
+    String getDescription();
+    
+    /**
+     * 
+     * @return ImageIcon The image icon.
+     */
+    ImageIcon getImage();
+}

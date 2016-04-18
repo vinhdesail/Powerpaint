@@ -1,0 +1,66 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package actions;
+
+import gui.PowerPaintPanel;
+
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
+import tools.Tool;
+
+/**
+ * Represent an Action for the tools. 
+ * 
+ * @author vvien
+ * @version 2.1
+ */
+public class ToolAction extends AbstractAction {
+    
+    
+    /**
+     * The SerialVersionUID. 
+     */
+    private static final long serialVersionUID = 6083256554227703065L;
+    
+    /**
+     * The tool related to the action. 
+     */
+    private final Tool myTool;
+    
+    /**
+     * The Paint Panel.
+     */
+    private final PowerPaintPanel myPanel;
+    
+    
+    /**
+     * Constructor for the Tool Actions.
+     * 
+     * @param theTool The tool related to action. 
+     * @param theMnemonicKey The MnemonicKey related to the action. 
+     */
+    public ToolAction(final Tool theTool, final int theMnemonicKey) {
+        super(theTool.getDescription(), theTool.getImage());
+        myTool = theTool;
+        myPanel = theTool.getPaintPanel();
+        putValue(Action.MNEMONIC_KEY, theMnemonicKey);
+        putValue(Action.SELECTED_KEY, true);
+    }
+
+    /** 
+     * The action that select the currently use tool. 
+     * 
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @param theEvent The action event.
+     */
+    @Override
+    public void actionPerformed(final ActionEvent theEvent) {
+        myPanel.setTool(myTool);
+
+    }
+
+}

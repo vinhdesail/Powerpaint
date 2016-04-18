@@ -1,0 +1,75 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package tools;
+
+import gui.PowerPaintPanel;
+
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
+
+import javax.swing.ImageIcon;
+
+/**
+ * The Rectangle tool object.
+ * 
+ * @author vvien
+ * @version 1.7
+ */
+public class RectangleTool extends AbstractTools {
+    
+    /**
+     * My description.
+     */
+    private static final String DEFAULT_DESCRIPTION = "Rectangle";
+    
+    /**
+     * My image.
+     */
+    private static final ImageIcon DEFAULT_IMAGE  = 
+                    new ImageIcon("./images./rectangle_bw.gif");
+    
+    /**
+     * My current rectangle. 
+     */
+    private Rectangle2D.Double myRectangle;
+    
+    /**
+     * Constructor for the object.
+     * 
+     * @param thePanel The paint panel passed. 
+     */
+    public RectangleTool(final PowerPaintPanel thePanel) {
+        
+        super(DEFAULT_DESCRIPTION, DEFAULT_IMAGE, thePanel);
+        myRectangle = new Rectangle2D.Double();
+    }
+
+    @Override
+    public void mousePressed(final MouseEvent theEvent) {
+        
+        myRectangle = new Rectangle2D.Double();
+        myInitialPoint = (Point) theEvent.getPoint().clone();
+        myRectangle.setFrameFromDiagonal(myInitialPoint, myInitialPoint);
+        
+    }
+
+    @Override
+    public void mouseReleased(final MouseEvent theEvent) {
+        myEndPoint = (Point) theEvent.getPoint().clone();
+        myRectangle.setFrameFromDiagonal(myInitialPoint, myEndPoint);
+        myPanel.repaint();
+    }
+
+    @Override
+    public void mouseDragged(final MouseEvent theEvent) {
+        myEndPoint = (Point) theEvent.getPoint().clone();
+        myRectangle.setFrameFromDiagonal(myInitialPoint, myEndPoint);
+        myPanel.repaint();
+        myPanel.addNewShape(myRectangle);
+        
+    }
+
+    
+}

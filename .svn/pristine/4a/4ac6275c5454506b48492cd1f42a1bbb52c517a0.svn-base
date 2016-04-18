@@ -1,0 +1,33 @@
+/* 
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package tools;
+
+import javax.swing.ImageIcon;
+
+/**
+ * The Pencil tool object.
+ * 
+ * @author vvien
+ * @version 1.5
+ */
+public class PencilTool extends AbstractTools {
+    
+    /**
+     * My description.
+     */
+    private static final String DEFAULT_DESCRIPTION = "Pencil";
+    
+    /**
+     * My image.
+     */
+    private static final ImageIcon DEFAULT_IMAGE  = new ImageIcon("./images./pencil_bw.gif");
+    
+    /**
+     * Constructor for the object.
+     */
+    public PencilTool() {
+        super(DEFAULT_DESCRIPTION, DEFAULT_IMAGE);
+    }
+
+}

@@ -1,0 +1,87 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+
+package tools;
+
+import java.awt.Point;
+import java.awt.Shape;
+
+import javax.swing.ImageIcon;
+
+/**
+ * The abstract tools for all the tools. 
+ * 
+ * @author vvien
+ * @version 2.0
+ */
+public interface Tool {
+    
+    
+    /**
+     * Return the object name.
+     * 
+     * @return String The image description.
+     */
+    String getDescription();
+    
+    /**
+     * Return the object icon.
+     * 
+     * @return ImageIcon The image icon.
+     */
+    ImageIcon getImage();
+    
+    /**
+     * Return the object related mnemonic.
+     * 
+     * @return Integer The related mnemonic. 
+     */
+    int getMnemonic();
+    
+    /**
+     * Return the shape when clicked. 
+     * 
+     * @param thePoint The point related to the clicked. 
+     * @return shape The related shape.
+     */
+    Shape getClickedShape(final Point thePoint);
+    
+    /**
+     * Return the shape when pressed. 
+     * 
+     * @param thePoint The point related to the pressed. 
+     * @return shape The related shape.
+     */
+    Shape getPressedShape(final Point thePoint);
+    
+    /**
+     * Return the shape when dragged. 
+     * 
+     * @param thePoint The point related to the dragged. 
+     * @return shape The related shape.
+     */
+    Shape getDraggedShape(final Point thePoint);
+    
+    /**
+     * Return the shape when released. 
+     * 
+     * @param thePoint The point related to the released. 
+     * @return shape The related shape.
+     */
+    Shape getReleasedShape(final Point thePoint);
+    
+//    /**
+//     * Return the Paint Panel.
+//     * 
+//     * @return PaintPanel The main Paint panel.
+//     */
+//    PowerPaintPanel getPaintPanel();
+    
+//    /**
+//     * Return the current drawing.
+//     * 
+//     * @return DrawingStorage The current drawing.
+//     */
+//    DrawingStorage getCurrentDrawing();
+}

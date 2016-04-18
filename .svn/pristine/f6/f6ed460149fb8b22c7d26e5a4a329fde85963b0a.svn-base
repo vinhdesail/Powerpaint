@@ -1,0 +1,74 @@
+package tools;
+
+import gui.PowerPaintPanel;
+
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
+
+import javax.swing.ImageIcon;
+
+/*
+ * TCSS 305 - Assignment 5: PowerPaint  
+ */
+
+/**
+ *  The Ellipse tool object.
+ * 
+ * @author vvien
+ * @version 1.8
+ */
+public class EllipseTool extends AbstractTools {
+    
+    /**
+     * My description.
+     */
+    private static final String DEFAULT_DESCRIPTION = "Ellipse";
+    
+    /**
+     * My image.
+     */
+    private static final ImageIcon DEFAULT_IMAGE  = new ImageIcon("./images./ellipse_bw.gif");
+    
+    /**
+     * My current ellipse.
+     */
+    private Ellipse2D.Double myEllipse;
+    
+    /**
+     * Constructor for the object.
+     * 
+     * @param thePanel The main Paint panel. 
+     */
+    public EllipseTool(final PowerPaintPanel thePanel) {
+        super(DEFAULT_DESCRIPTION, DEFAULT_IMAGE, thePanel);
+        myEllipse = new Ellipse2D.Double();
+        
+    }
+    
+    @Override
+    public void mousePressed(final MouseEvent theEvent) {
+        
+        myEllipse = new Ellipse2D.Double();
+        myInitialPoint = (Point) theEvent.getPoint().clone();
+        myEllipse.setFrameFromDiagonal(myInitialPoint, myInitialPoint);
+        
+    }
+
+    @Override
+    public void mouseReleased(final MouseEvent theEvent) {
+        myEndPoint = (Point) theEvent.getPoint().clone();
+        myEllipse.setFrameFromDiagonal(myInitialPoint, myEndPoint);
+        myPanel.repaint();
+    }
+
+    @Override
+    public void mouseDragged(final MouseEvent theEvent) {
+        myEndPoint = (Point) theEvent.getPoint().clone();
+        myEllipse.setFrameFromDiagonal(myInitialPoint, myEndPoint);
+        myPanel.repaint();
+        myPanel.addNewShape(myEllipse);
+        
+    }
+    
+}

@@ -1,0 +1,360 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package gui;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+
+import javax.swing.JPanel;
+import javax.swing.event.MouseInputAdapter;
+
+import tools.PencilTool;
+import tools.Tool;
+
+/**
+ * Represent the main Paint Panel for PowerPaint.
+ * 
+ * @author vvien
+ * @version 2.4
+ */
+public class PowerPaintPanel extends JPanel {
+    
+    /** The serial version UID. */
+    private static final long serialVersionUID = -4415003230004206895L;
+
+    /** 
+     * The default width of the JFrame. 
+     */
+    private static final int DEFAULT_WIDTH = 400;
+
+    /** 
+     * The default height of the JFrame. 
+     */
+    private static final int DEFAULT_HEIGHT = 200;
+    
+    /**
+     * The Grid spacing.
+     */
+    private static final int GRID_SPACING = 10;
+    
+    /**
+     * The default point to start at.
+     */
+    private static final Point DEFAULT_POINT = new Point(-50, -50);
+    
+    /**
+     * The default shape.
+     */
+    private static final Shape DEFAULT_SHAPE = new Line2D.Double(DEFAULT_POINT, DEFAULT_POINT);
+    
+    
+    /**
+     * The color of the graphic currently being drawn.
+     */
+    private Color myColor;
+    
+    /**
+     * The current width.
+     */
+    private int myWidth;
+    
+    /**
+     * The current shape being drawn.
+     */
+    private Shape myShape;
+    
+    /**
+     * The shape storage that stores all drawings.
+     */
+    private final List<DrawingStorage> myDrawingList;
+    
+    /**
+     * Boolean to see if grid is enable.
+     */
+    private boolean myGridAlive;
+    
+    /**
+     * The 2d graphics. 
+     */
+    private Graphics2D myG2d;
+    
+    /**
+     * The current tool.
+     */
+    private Tool myCurrentTool;
+    
+    /**
+     * The list to store undo.
+     */
+    private final Deque<DrawingStorage> myUndoStack;
+    
+    
+    /**
+     * The constructor for the JPanel.
+     */
+    public PowerPaintPanel() {
+        
+        super();
+        setBackground(Color.WHITE);
+        setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+        setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+        setUpBeginning();
+        myDrawingList = new ArrayList<DrawingStorage>();
+        myUndoStack = new ArrayDeque<DrawingStorage>();
+        
+        final MainMouseListener mainListener = new MainMouseListener();
+        addMouseListener(mainListener);
+        addMouseMotionListener(mainListener);
+    }
+    
+    /**
+     * Helper method for constructor to set up the beginning.
+     */
+    private void setUpBeginning() {
+        
+        myCurrentTool = new PencilTool();
+        myColor = Color.BLACK;
+        myWidth = 1;
+        myShape = DEFAULT_SHAPE;
+        myGridAlive = false;
+    }
+    
+    /**
+     * The Paint component.
+     * 
+     * @param theGraphics The graphics passed.
+     */
+    @Override
+    public void paintComponent(final Graphics theGraphics) {
+        
+        super.paintComponent(theGraphics);
+        myG2d = (Graphics2D) theGraphics;
+        myG2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                             RenderingHints.VALUE_ANTIALIAS_ON);
+        
+       
+        //------------- Draw the original stuff -----------//
+        drawList();
+        
+        
+        //------------- Draw the new stuff ----------------//
+//        final DrawingStorage currentDrawing = myCurrentTool.getCurrentDrawing(); 
+        myG2d.setPaint(myColor);
+        myG2d.setStroke(new BasicStroke(myWidth));
+        myG2d.draw(myShape);
+        
+        
+        //------------- Draw the Grid ----------------------//
+        if (myGridAlive) {
+            drawGrid();
+        }
+        
+    }
+    
+    
+    /**
+     * Helper method to draw the list.
+     */
+    private void drawList() {
+        
+        //check if list is empty for undo all button. 
+        if (myDrawingList.isEmpty()) {
+            firePropertyChange("Disable", null, myDrawingList);
+        } else {
+            for (final DrawingStorage drawing : myDrawingList) {
+                myG2d.setPaint(drawing.getMyColor());
+                myG2d.setStroke(new BasicStroke(drawing.getMyWidth()));
+                myG2d.draw(drawing.getMyShape());
+            }
+            firePropertyChange("Enable", null, myDrawingList);
+        }
+        
+    }
+    
+    /**
+     * Helper method to draw the grid.
+     */
+    private void drawGrid() {
+        
+        myG2d.setColor(Color.GRAY);
+        myG2d.setStroke(new BasicStroke(1));
+        final int heightSpacing = getHeight() / GRID_SPACING;
+        for (int i = 0; i <= heightSpacing; i++) {
+            myG2d.draw(new Line2D.Double(0, GRID_SPACING * i, 
+                                         getWidth(), GRID_SPACING * i));
+        }
+        final int widthSpacing = getWidth() / GRID_SPACING; 
+        for (int i = 0; i <= widthSpacing; i++) {
+            myG2d.draw(new Line2D.Double(GRID_SPACING * i, 0,
+                                         GRID_SPACING * i, getHeight()));
+        }
+    }
+    
+    /**
+     * Save a new shape to list.
+     * 
+     * @param theNewShape New shape that will be save to list. 
+     */
+    public void addNewShape(final Shape theNewShape) {
+        
+        myDrawingList.add(new DrawingStorage(theNewShape, myColor, myWidth));
+    }
+    
+    /**
+     * Display the grid or not.
+     */
+    public void displayGrid() {
+        
+        if (myGridAlive) {
+            myGridAlive = false;
+        } else {
+            myGridAlive = true; 
+        }
+    }
+    
+    /**
+     * Setting the new color.
+     * 
+     * @param theColor The new color. 
+     */
+    public void setColor(final Color theColor) {
+        
+        myColor = theColor;
+    }
+    
+    /**
+     * Set the current width to new value.
+     * 
+     * @param theWidth The current width change. 
+     */
+    public void setMyWidth(final int theWidth) {
+        
+        myWidth = theWidth;
+    }
+    
+    /**
+     * Clear the the panel.
+     */
+    public void clearPanel() {
+        
+        // clear the list and undo stack. 
+        myDrawingList.clear();
+        clearUndoStack();
+        repaint();
+    }
+    
+    /**
+     * Check if panel is cleared.
+     * 
+     * @return true If the panel is empty. 
+     */
+    public boolean isClear() {
+        
+        return myDrawingList.isEmpty();
+    }
+
+    /**
+     * Select the pencil too. 
+     * 
+     * @param theTool The tool selected. 
+     */
+    public void setTool(final Tool theTool) {
+        
+        myCurrentTool = theTool; 
+    }
+    
+    /**
+     * Undo the last drawing.
+     */
+    public void undoLast() {
+        
+        final DrawingStorage temp = myDrawingList.get(myDrawingList.size() - 1);
+        myDrawingList.remove(temp);
+        myUndoStack.push(temp);
+        repaint();
+    }
+    
+    /**
+     * Re-do the last drawing.
+     */
+    public void redoLast() {
+        
+        myDrawingList.add(myUndoStack.pop());
+        repaint();
+    }
+    
+    /**
+     * Check if undo stack is cleared.
+     * 
+     * @return true If the undo stack is empty. 
+     */
+    public boolean isUndoClear() {
+        
+        return myUndoStack.isEmpty();
+    }
+    
+    /**
+     * Private method to empty the Undo stack when new shape is drawn.
+     */
+    private void clearUndoStack() {
+        
+        myUndoStack.clear();
+        firePropertyChange("DisableRedo", null, myDrawingList);
+    }
+   
+    
+    /**
+     * Inner class for the listener.
+     */
+    private class MainMouseListener extends MouseInputAdapter {
+        
+        @Override
+        public void mouseClicked(final MouseEvent theEvent) {
+            
+            clearUndoStack();
+            myShape = myCurrentTool.getClickedShape(theEvent.getPoint());
+            myDrawingList.add(new DrawingStorage(myShape, myColor, myWidth));
+            myShape = DEFAULT_SHAPE;
+            repaint();
+        }
+
+        @Override
+        public void mousePressed(final MouseEvent theEvent) {
+            
+            clearUndoStack();
+            myShape = myCurrentTool.getPressedShape(theEvent.getPoint());
+            repaint();
+        }
+        
+        @Override
+        public void mouseDragged(final MouseEvent theEvent) {
+            
+            myShape = myCurrentTool.getDraggedShape(theEvent.getPoint());
+            repaint();
+        }
+        
+        @Override
+        public void mouseReleased(final MouseEvent theEvent) {
+            
+            myShape = myCurrentTool.getReleasedShape(theEvent.getPoint());
+            myDrawingList.add(new DrawingStorage(myShape, myColor, myWidth));
+            myShape = DEFAULT_SHAPE;
+            repaint();
+        }
+    }
+    
+}

@@ -1,0 +1,136 @@
+package tools;
+
+import java.awt.Point;
+import java.awt.Shape;
+import java.awt.event.KeyEvent;
+import java.awt.geom.Ellipse2D;
+
+import javax.swing.ImageIcon;
+
+/*
+ * TCSS 305 - Assignment 5: PowerPaint  
+ */
+
+/**
+ *  The Ellipse tool object.
+ * 
+ * @author vvien
+ * @version 1.8
+ */
+public class EllipseTool extends AbstractTools {
+    
+    /**
+     * The name of the Ellipse.
+     */
+    private static final String DEFAULT_DESCRIPTION = "Ellipse";
+    
+    /**
+     * The image related to the Ellipse.
+     */
+    private static final ImageIcon DEFAULT_IMAGE  = new ImageIcon("./images./ellipse_bw.gif");
+    
+    /**
+     * The mnemonic related to the Ellipse.
+     */
+    private static final int DEFAULT_MNEMONIC = KeyEvent.VK_E;
+    
+    /**
+     * My current ellipse.
+     */
+    private Ellipse2D.Double myEllipse;
+    
+    /**
+     * Constructor for the object.
+     */
+    public EllipseTool() {
+        super(DEFAULT_DESCRIPTION, DEFAULT_IMAGE, DEFAULT_MNEMONIC);
+        myEllipse = new Ellipse2D.Double();
+        
+    }
+    
+    /**
+     * Return the shape when clicked.
+     * Ellipse makes a nothing. 
+     * 
+     * @param thePoint The point related to the shape. 
+     * @return myEllipse The shape when clicked. 
+     */
+    @Override
+    public Shape getClickedShape(final Point thePoint) {
+        myEllipse = new Ellipse2D.Double();
+        myInitialPoint = (Point) thePoint.clone();
+        myEllipse.setFrameFromDiagonal(myInitialPoint, myInitialPoint);
+        return myEllipse;
+    }
+    
+    /**
+     * Return the shape when pressed.
+     * In this case ellipse draws a dot. 
+     * 
+     * @param thePoint The point related to Pressed.
+     * @return myEllipse The shape that pencil makes.
+     */
+    @Override
+    public Shape getPressedShape(final Point thePoint) {
+        myInitialPoint = (Point) thePoint.clone();
+        myEllipse = new Ellipse2D.Double();
+        myEllipse.setFrameFromDiagonal(myInitialPoint, myInitialPoint);
+        return myEllipse;
+    }
+    
+    /**
+     * Return the shape when Dragged.
+     * In this case ellipse draws a ellipse from Pressed to Dragged.
+     * 
+     * @param thePoint The point related to Dragged.
+     * @return myEllipse The shape that pencil makes.
+     */
+    @Override
+    public Shape getDraggedShape(final Point thePoint) {
+        myEndPoint = (Point) thePoint.clone();
+        myEllipse.setFrameFromDiagonal(myInitialPoint, myEndPoint);
+        return myEllipse;
+    }
+    
+    /**
+     * Return the shape when Released.
+     * In this case ellipse draws a ellipse from Pressed to Released. 
+     * 
+     * @param thePoint The point related to Released.
+     * @return myEllipse The shape that pencil makes.
+     */
+    @Override
+    public Shape getReleasedShape(final Point thePoint) {
+        myEndPoint = (Point) thePoint.clone();
+        myEllipse.setFrameFromDiagonal(myInitialPoint, myEndPoint);
+        return myEllipse;
+    }
+    
+    
+//    @Override
+//    public void mousePressed(final MouseEvent theEvent) {
+//        
+//        myEllipse = new Ellipse2D.Double();
+//        myInitialPoint = (Point) theEvent.getPoint().clone();
+//        myEllipse.setFrameFromDiagonal(myInitialPoint, myInitialPoint);
+//        
+//    }
+//
+//    @Override
+//    public void mouseReleased(final MouseEvent theEvent) {
+//        myEndPoint = (Point) theEvent.getPoint().clone();
+//        myEllipse.setFrameFromDiagonal(myInitialPoint, myEndPoint);
+//        myPanel.repaint();
+//        myCurrentDrawing = myDefaultDrawing;
+//    }
+//
+//    @Override
+//    public void mouseDragged(final MouseEvent theEvent) {
+//        myEndPoint = (Point) theEvent.getPoint().clone();
+//        myEllipse.setFrameFromDiagonal(myInitialPoint, myEndPoint);
+//        myPanel.repaint();
+//        myPanel.addNewShape(myEllipse);
+//        
+//    }
+    
+}

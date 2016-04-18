@@ -1,0 +1,164 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package tools;
+
+import gui.DrawingStorage;
+import gui.PowerPaintPanel;
+
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
+
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+
+
+
+/**
+ * The abstract tools for all the tools. 
+ * 
+ * @author vvien
+ * @version 1.4
+ */
+public abstract class AbstractTools implements Tool {
+    
+    /**
+     * The current drawing. 
+     */
+    protected DrawingStorage myCurrentDrawing;
+    
+    /**
+     * The initial point.
+     */
+    protected Point myInitialPoint;
+    
+    /**
+     * The end point.
+     */
+    protected Point myEndPoint;
+    
+    /**
+     * The PaintPanel.
+     */
+    protected PowerPaintPanel myPanel;
+    
+    /**
+     * The undo all action Action.
+     */
+    protected Action myUndoAllAction; 
+    
+    /**
+     * The image of the objects.
+     */
+    private final ImageIcon myImage;
+    
+    /**
+     * The description of the object.
+     */
+    private final String myDescription;
+    
+    
+    /**
+     * The constructor for this class.
+     * It is protected for only the lower class to use.
+     * 
+     * @param theDescription The description of the object.
+     * @param theImage The image of the object.
+     * @param thePanel The paint panel.
+     */
+    protected AbstractTools(final String theDescription, final ImageIcon theImage, 
+                            final PowerPaintPanel thePanel) {
+        super();
+        myDescription = theDescription;
+        myImage = theImage;
+        myPanel = thePanel;
+        myInitialPoint = new Point(-1, -1);
+        myCurrentDrawing = new DrawingStorage(new Line2D.Double(myInitialPoint, 
+                                                                myInitialPoint),
+                                       myPanel.getColor(), myPanel.getMyWidth());
+        //TODO
+        myUndoAllAction = null;
+    }
+    
+    
+    /**
+     * Return to name of the object.
+     * 
+     * @return String The description related to the object.
+     */
+    public String getDescription() {
+        return myDescription;
+    }
+    
+    /**
+     * Return the relate image icon.
+     * 
+     * @return Image The Image related to the object.
+     */
+    public ImageIcon getImage() {
+        return myImage;
+    }
+    
+    /**
+     * Return the paint panel. 
+     * 
+     * @return PowerPaintPanel The main paint panel. 
+     */
+    public PowerPaintPanel getPaintPanel() {
+        return myPanel;
+    }
+    
+    
+    /**
+     * Return the current drawing. 
+     * 
+     * @return DrawingStorage The current drawings. 
+     */
+    public DrawingStorage getCurrentDrawing() {
+        return myCurrentDrawing;
+    }
+    
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+}

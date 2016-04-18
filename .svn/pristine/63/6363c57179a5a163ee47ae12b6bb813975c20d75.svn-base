@@ -1,0 +1,132 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package tools;
+
+import java.awt.Point;
+
+import javax.swing.ImageIcon;
+
+
+
+/**
+ * The abstract tools for all the tools. 
+ * 
+ * @author vvien
+ * @version 1.4
+ */
+public abstract class AbstractTools implements Tool {
+    
+    /**
+     * The initial point.
+     */
+    protected Point myInitialPoint;
+    
+    /**
+     * The end point.
+     */
+    protected Point myEndPoint;
+    
+    /**
+     * The image of the objects.
+     */
+    private final ImageIcon myImage;
+    
+    /**
+     * The description of the object.
+     */
+    private final String myDescription;
+    
+    /**
+     * The mnemonic key attached.
+     */
+    private final int myMnemonic;
+    
+    
+    /**
+     * The constructor for this class.
+     * It is protected for only the lower class to use.
+     * 
+     * @param theDescription The description of the object.
+     * @param theImage The image of the object.
+     * @param theMnemonic The mnemonic for the tools related. 
+     */
+    protected AbstractTools(final String theDescription, final ImageIcon theImage, 
+                            final int theMnemonic) {
+        super();
+        myDescription = theDescription;
+        myImage = theImage;
+        myMnemonic = theMnemonic;
+
+    }
+    
+    
+    /**
+     * Return to name of the object.
+     * 
+     * @return String The description related to the object.
+     */
+    public String getDescription() {
+        return myDescription;
+    }
+    
+    /**
+     * Return the relate image icon.
+     * 
+     * @return Image The Image related to the object.
+     */
+    public ImageIcon getImage() {
+        return myImage;
+    }
+    
+    /**
+     * Return the related mnemonic.
+     * 
+     * @return myMnemonic The related mnemonic.
+     */
+    public int getMnemonic() {
+        return myMnemonic;
+    }
+    
+//    
+//    @Override
+//    public Shape getClickedShape(final Point thePoint) {
+//        return myShape; 
+//    }
+//    
+//    @Override
+//    public Shape getPressedShape(final Point thePoint) {
+//        return myShape;
+//    }
+//    
+//    @Override
+//    public Shape getDraggedShape(final Point thePoint) {
+//        return myShape;
+//    }
+//    
+//    @Override
+//    public Shape getReleasedShape(final Point thePoint) {
+//        return myShape;
+//    }
+    
+//    /**
+//     * Return the paint panel. 
+//     * 
+//     * @return PowerPaintPanel The main paint panel. 
+//     */
+//    public PowerPaintPanel getPaintPanel() {
+//        return myPanel;
+//    }
+    
+    
+//    /**
+//     * Return the current drawing. 
+//     * 
+//     * @return DrawingStorage The current drawings. 
+//     */
+//    public DrawingStorage getCurrentDrawing() {
+//        return myCurrentDrawing;
+//    }
+    
+
+}

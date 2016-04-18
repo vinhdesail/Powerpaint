@@ -1,0 +1,283 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint
+ */
+package gui;
+
+import actions.ToolAction;
+import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+
+import tools.EllipseTool;
+import tools.LineTool;
+import tools.PencilTool;
+import tools.RectangleTool;
+
+/**
+ * The Main GUI of PowerPaint. 
+ * 
+ * @author vvien
+ * @version 1.1
+ */
+public class PowerPaintGUI {
+
+    /** 
+     * The default width of the JFrame. 
+     */
+    private static final int DEFAULT_WIDTH = 400;
+
+    /** 
+     * The default height of the JFrame. 
+     */
+    private static final int DEFAULT_HEIGHT = 200;
+    
+    /**
+     * The main JFrame.
+     */
+    private final JFrame myFrame;
+    
+    /**
+     * Constructor for PowerPaintGUI.
+     */
+    public PowerPaintGUI() {
+        myFrame = new JFrame("PowerPaint");
+        myFrame.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        
+        setUpTools();
+        
+//        final JToolBar toolBar = createToolBar();
+//        myFrame.add(toolBar, BorderLayout.SOUTH);
+        
+        final ImageIcon img = new ImageIcon("./images./w.gif");
+        myFrame.setIconImage(img.getImage());
+        
+//        myFrame.setJMenuBar(createMenuBar());
+        //TODO
+    }
+    
+    /**
+     * A helper method to set up the tools.
+     */
+    private void setUpTools() {
+//        myTools = new ArrayList<>();
+//        myTools.add(createToolButton(new PencilTool(), 'p', KeyEvent.VK_P));
+//        myTools.add(createToolButton(new LineTool(), 'l', KeyEvent.VK_L));
+//        myTools.add(createToolButton(new RectangleTool(), 'r', KeyEvent.VK_R));
+//        myTools.add(createToolButton(new EllipseTool(), 'e', KeyEvent.VK_E));
+        
+        final PowerPaintPanel drawPanel = new PowerPaintPanel();
+        
+        final List<ToolAction> toolAction = new ArrayList<>();
+        toolAction.add(new ToolAction(new PencilTool(), KeyEvent.VK_P));
+        toolAction.add(new ToolAction(new LineTool(), KeyEvent.VK_L));
+        toolAction.add(new ToolAction(new RectangleTool(), KeyEvent.VK_R));
+        toolAction.add(new ToolAction(new EllipseTool(), KeyEvent.VK_E));
+        
+        final PowerPaintToolBar toolBar = new PowerPaintToolBar();
+        final PowerPaintMenuBar menuBar = new PowerPaintMenuBar(myFrame, drawPanel);
+        
+        for (final ToolAction tempToolAction : toolAction) {
+            toolBar.createToolBarButton(tempToolAction);
+            menuBar.createToolRadioButton(tempToolAction);
+        }
+        
+        myFrame.add(toolBar, BorderLayout.SOUTH);
+        myFrame.setJMenuBar(menuBar);
+    }
+    
+    /**
+     * The start to the GUI.
+     */
+    public void start() {
+        
+        //End of the program, center and make visible.
+        myFrame.setLocationRelativeTo(null);
+        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        myFrame.setVisible(true);
+        
+    }
+    
+    
+//    /**
+//     * Create the Tool Bar.
+//     * 
+//     * @return JToolBar The tool bar created.
+//     */
+//    private JToolBar createToolBar() {
+//        
+//        final JToolBar bar = new JToolBar();
+//        
+//        for (final JButton tool : myTools) {
+//            bar.add(tool);
+//        }
+//        
+//        return bar;
+//    }
+    
+//    /**
+//     * Create the Menu bar. 
+//     * 
+//     * @return JMenuBar The menu bar created
+//     */
+//    private JMenuBar createMenuBar() {
+//        final JMenuBar menuBar = new JMenuBar();
+//        
+//        // ------------ set up the File menu ----------------------- //
+//        final JMenu fileMenu = new JMenu("File");
+//        setJMenuMnemonic(fileMenu, 'f', KeyEvent.VK_F);
+//        fileMenu.add(createUndoAllAction());
+//        fileMenu.addSeparator();
+//        fileMenu.add(createExitAction());
+//        menuBar.add(fileMenu);
+//        
+//        
+//        // ------------ set up the Option menu ---------------------- //
+//        final JMenu optionMenu = new JMenu("Option");
+//        setJMenuMnemonic(optionMenu, 'o', KeyEvent.VK_O);
+//        //TODO
+//        menuBar.add(optionMenu);
+//        
+//        
+//        // ------------ set up the Tools menu ----------------------- //
+//        final JMenu toolMenu = new JMenu("Tools");
+//        setJMenuMnemonic(toolMenu, 't', KeyEvent.VK_T);
+//        //TODO
+//        menuBar.add(toolMenu);
+//        
+//        
+//        // ------------ set up the Helps menu ----------------------- //
+//        final JMenu helpMenu = new JMenu("Help");
+//        setJMenuMnemonic(helpMenu, 'h', KeyEvent.VK_H);
+//        helpMenu.add(createAboutAction());
+//        menuBar.add(helpMenu);
+//        
+//        return menuBar;
+//    }
+    
+//    /**
+//     * Create the button for tools.
+//     * 
+//     * @param theTool The Object passed. 
+//     * @param theChar The mnemonic char.
+//     * @param theKey The mnemonic key.
+//     * @return JButton The button for the tools.
+//     */
+//    private JButton createToolButton(final Tool theTool, 
+//                                     final char theChar, final int theKey) {
+//    
+//        final JButton button = new JButton(theTool.getDescription(), theTool.getImage());
+//        button.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(final ActionEvent theEvent) {
+//                
+//                //TODO
+//            }
+//        });
+//        button.setMnemonic(theChar);
+//        button.setMnemonic(theKey);
+//        
+//        return button;
+//    }
+    
+    
+//    /**
+//     * Private helper method to set mnemonic key for JMenu.
+//     * 
+//     * @param theMenu The JMenu.
+//     * @param theChar The character.
+//     * @param theKey The KeyEvent VK.
+//     */
+//    private void setJMenuMnemonic(final JMenu theMenu, final char theChar, final int theKey){
+//        theMenu.setMnemonic(theChar);
+//        theMenu.setMnemonic(theKey);
+//    }
+//    
+//    /**
+//     * Private helper method to set mnemonic key for Action.
+//     * 
+//     * @param theAction The Action.
+//     * @param theKey The KeyEvent VK.
+//     */
+//    private void setActionMnemonic(final Action theAction, final int theKey) {
+//        theAction.putValue(Action.MNEMONIC_KEY, theKey);
+//    }
+//    
+//    /**
+//     * Private helper method to create the Exit Action.
+//     * 
+//     * @return Action The exit Action.
+//     */
+//    private Action createExitAction() {
+//    
+//        final Action exitAction = new AbstractAction("Exit") {
+//            /** The SerialVersionUID */
+//            private static final long serialVersionUID = 5971781995372335613L;
+//        
+//            @Override
+//            public void actionPerformed(final ActionEvent theEvent) {
+//                myFrame.dispose(); // close this Window
+//            }
+//        };
+//        setActionMnemonic(exitAction, KeyEvent.VK_X);
+//        return exitAction;
+//    }
+//    
+//    /**
+//     * Private helper method to create the Undo all Action.
+//     * 
+//     * @return Action The undo all Action.
+//     */
+//    private Action createUndoAllAction() {
+//
+//        final Action undoAllAction = new AbstractAction("Undo All Changes") {
+//
+//            /** The SerialVersionUID */
+//            private static final long serialVersionUID = -280670658272434959L;
+//
+//            @Override
+//            public void actionPerformed(final ActionEvent theEvent) {
+//                //TODO
+//            }
+//        };
+//        setActionMnemonic(undoAllAction, KeyEvent.VK_U);
+//        //TODO
+//        undoAllAction.setEnabled(false);
+//        return undoAllAction;
+//    }
+//    
+//    /**
+//     * Private helper method to create the About Action.
+//     * 
+//     * @return Action The about Action.
+//     */
+//    private Action createAboutAction() {
+//
+//        final Action aboutAction = new AbstractAction("About...") {
+//
+//            /** The SerialVerisonUID */
+//            private static final long serialVersionUID = 2175707911621823936L;
+//
+//            @Override
+//            public void actionPerformed(final ActionEvent theEvent) {
+//                //Get imageIcon, set size in image, turn it back.
+//                ImageIcon imgIcon = new ImageIcon("./images./w.gif");
+//                final Image img = imgIcon.getImage();
+//                final Image newimg = img.getScaledInstance(35, 25, 
+//                                                           java.awt.Image.SCALE_SMOOTH);   
+//                imgIcon = new ImageIcon(newimg);  // transform it back
+//                
+//                JOptionPane.showMessageDialog(null, "TCSS 305 PowerPaint\nSpring 2015", 
+//                                              "About", JOptionPane.INFORMATION_MESSAGE, 
+//                                              imgIcon);
+//            }
+//        };
+//        setActionMnemonic(aboutAction, KeyEvent.VK_A);
+//        return aboutAction;
+//    }
+    
+    
+}

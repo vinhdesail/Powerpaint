@@ -1,0 +1,58 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package actions;
+
+import gui.PowerPaintPanel;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
+/**
+ * The undo all action Action. 
+ * 
+ * @author vvien
+ * @version 3.2
+ */
+public class UndoAllAction extends AbstractAction {
+    
+    /** The SerialVersionUID. */
+    private static final long serialVersionUID = -280670658272434959L;
+    
+    /**
+     * The main Paint Panel.
+     */
+    private final PowerPaintPanel myPanel;
+    
+    /**
+     * The constructor for the class. 
+     * 
+     * @param thePanel The main paint panel.
+     */
+    public UndoAllAction(final PowerPaintPanel thePanel) {
+        super("Undo All Changes");
+        myPanel = thePanel;
+        putValue(Action.MNEMONIC_KEY, KeyEvent.VK_U);
+        if (myPanel.isPanelEmpty()) {
+            setEnabled(false);
+        } else {
+            setEnabled(true);
+        }
+    }
+    
+    /**
+     * The action to undo all action.
+     * 
+     * @param theEvent The Action event.
+     */
+    @Override
+    public void actionPerformed(final ActionEvent theEvent) {
+        
+        myPanel.clearPanel();
+        setEnabled(false);
+    }
+
+}

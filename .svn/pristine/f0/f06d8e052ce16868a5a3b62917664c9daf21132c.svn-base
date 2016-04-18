@@ -1,0 +1,34 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package tools;
+
+import javax.swing.ImageIcon;
+
+/**
+ * The Rectangle tool object.
+ * 
+ * @author vvien
+ * @version 1.7
+ */
+public class RectangleTool extends AbstractTools {
+    
+    /**
+     * My description.
+     */
+    private static final String DEFAULT_DESCRIPTION = "Rectangle";
+    
+    /**
+     * My image.
+     */
+    private static final ImageIcon DEFAULT_IMAGE  = 
+                    new ImageIcon("./images./rectangle_bw.gif");
+    
+    /**
+     * Constructor for the object.
+     */
+    public RectangleTool() {
+        super(DEFAULT_DESCRIPTION, DEFAULT_IMAGE);
+    }
+
+}

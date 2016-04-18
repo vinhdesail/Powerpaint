@@ -1,0 +1,32 @@
+/*
+ * TCSS 305 - Assignment 5: PowerPaint 
+ */
+package tools;
+
+import javax.swing.ImageIcon;
+
+/**
+ * The Line tool object.
+ * 
+ * @author vvien
+ * @version 1.6
+ */
+public class LineTool extends AbstractTools {
+    
+    /**
+     * My description.
+     */
+    private static final String DEFAULT_DESCRIPTION = "Line";
+    
+    /**
+     * My image.
+     */
+    private static final ImageIcon DEFAULT_IMAGE  = new ImageIcon("./images./line_bw.gif");
+    
+    /**
+     * Constructor for the object.
+     */
+    public LineTool() {
+        super(DEFAULT_DESCRIPTION, DEFAULT_IMAGE);
+    }
+}
